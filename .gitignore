@@ -1,0 +1,22 @@
+# gradle
+**/out/
+**/build/
+.gradle/
+
+# java
+*.class
+
+# Intellij
+*.iws
+gradle.xml
+task.xml
+workspace.xml
+**/.idea/dictionaries/
+
+# Intellij - these files conflict for Anshul
+**/.idea/artifacts/*.xml
+**/.idea/misc.xml
+**/.idea/libraries/
+
+# Mac
+.DS_Store

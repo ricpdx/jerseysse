@@ -1,0 +1,39 @@
+group 'sseserver'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'tomcat'
+
+repositories {
+    mavenCentral()
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:1.2.3'
+    }
+}
+
+dependencies {
+    compile(group: 'org.glassfish.jersey.bundles', name: 'jaxrs-ri', version: '2.19')
+    compile(group: 'org.glassfish.jersey.media', name: 'jersey-media-multipart', version: '2.19')
+    compile(group: 'org.glassfish.jersey.media', name: 'jersey-media-sse', version: '2.19')
+    compile(group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0')
+    compile(group: 'org.slf4j', name: 'slf4j-api', version: '1.7.12')
+    compile(group: 'ch.qos.logback', name: 'logback-core', version: '1.1.3')
+    compile(group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.3')
+}
+
+dependencies {
+    def tomcatVersion = '7.0.63'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+    tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
+        exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+    }
+}
