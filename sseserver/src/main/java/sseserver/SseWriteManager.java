@@ -38,13 +38,14 @@ public class SseWriteManager {
 				while (iterator.hasNext()) {
 					boolean remove = false;
 					Map.Entry<String, EventOutput> entry = iterator.next();
-					if (entry.getValue() != null) {
-						if (entry.getValue().isClosed()) {
+					EventOutput eventOutput = entry.getValue();
+					if (eventOutput != null) {
+						if (eventOutput.isClosed()) {
 							remove = true;
 						} else {
 							try {
 								logger.info("writing to id={}.", entry.getKey());
-								entry.getValue().write(new OutboundEvent.Builder().name("custom-message").data(String.class, "EOM").build());
+								eventOutput.write(new OutboundEvent.Builder().name("custom-message").data(String.class, "EOM").build());
 							} catch (Exception ex) {
 								logger.info(String.format("write failed to id=%s.", entry.getKey()), ex);
 								remove = true;
@@ -53,9 +54,9 @@ public class SseWriteManager {
 					}
 					if (remove) {
 						// we are removing the eventOutput. close it is if it not already closed.
-						if (entry.getValue() != null && !entry.getValue().isClosed()) {
+						if (!eventOutput.isClosed()) {
 							try {
-								entry.getValue().close();
+								eventOutput.close();
 							} catch (Exception ex) {
 								// do nothing.
 							}
